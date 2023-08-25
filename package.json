@@ -1,0 +1,17 @@
+{
+  "name": "fonteditor-pdfkit-bug",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "fonteditor-core-current": "npm:fonteditor-core@^2.2.0",
+    "fonteditor-core-211": "npm:fonteditor-core@2.1.1",
+    "fonteditor-core-212": "npm:fonteditor-core@2.1.2",
+    "pdfkit": "^0.13.0"
+  }
+}
