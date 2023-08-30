@@ -24,7 +24,22 @@ function createPdfWithFont(name, font) {
 }
 
 function applyFontEditor(name, fontEditor) {
-  const fontBuffer = fontEditor.Font.create(sourceFont, { type: 'ttf' }).write({ type: 'ttf' })
+  console.log('>>> ', name)
+
+  const font = fontEditor.Font.create(sourceFont, { type: 'ttf' });
+  const os2 = font.get()['OS/2'];
+
+  const fontBuffer = font.write({ type: 'ttf' })
+  
+  const createdFont = fontEditor.Font.create(fontBuffer, { type: 'ttf' });
+  const newOs2 = createdFont.get()['OS/2'];
+
+  Object.entries(os2).forEach(([key, value]) => {
+    if (newOs2[key] !== value) {
+      console.warn(`${key}: ${value} => ${newOs2[key]}`)
+    }
+  })
+  
   fs.writeFileSync(path.join(outDir, name + '.ttf'), fontBuffer);
   createPdfWithFont(name, fontBuffer);
 }

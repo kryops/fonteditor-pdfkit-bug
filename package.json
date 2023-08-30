@@ -9,7 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "fonteditor-core-current": "npm:fonteditor-core@^2.2.0",
+    "fonteditor-core-current": "npm:fonteditor-core@2.2.2",
     "fonteditor-core-211": "npm:fonteditor-core@2.1.1",
     "fonteditor-core-212": "npm:fonteditor-core@2.1.2",
     "pdfkit": "^0.13.0"
