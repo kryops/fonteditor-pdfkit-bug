@@ -23,23 +23,30 @@ function createPdfWithFont(name, font) {
   doc.end();
 }
 
+const font_211 = require('fonteditor-core-211').Font.create(sourceFont, { type: 'ttf' });
+const createdFont_211 = require('fonteditor-core-211').Font.create(font_211.write({ type: 'ttf' }), { type: 'ttf' });
+
+function objectDiff(name, a, b) {
+  Object.entries(a).forEach(([key, value]) => {
+    if (b[key] !== value && !(value instanceof Date)) {
+      console.warn(`${name}.${key}: ${value} => ${b[key]}`)
+    }
+  })
+}
+
 function applyFontEditor(name, fontEditor) {
   console.log('>>> ', name)
 
   const font = fontEditor.Font.create(sourceFont, { type: 'ttf' });
-  const os2 = font.get()['OS/2'];
-
   const fontBuffer = font.write({ type: 'ttf' })
   
   const createdFont = fontEditor.Font.create(fontBuffer, { type: 'ttf' });
-  const newOs2 = createdFont.get()['OS/2'];
 
-  Object.entries(os2).forEach(([key, value]) => {
-    if (newOs2[key] !== value) {
-      console.warn(`${key}: ${value} => ${newOs2[key]}`)
-    }
-  })
-  
+  ['OS/2', 'hhea', 'head', 'maxp'].forEach(property => {
+    // objectDiff('[read > written] ' + property, font.get()[property], createdFont.get()[property])
+    objectDiff('[diff to 2.1.1] ' + property, createdFont_211.get()[property], createdFont.get()[property])
+  });
+
   fs.writeFileSync(path.join(outDir, name + '.ttf'), fontBuffer);
   createPdfWithFont(name, fontBuffer);
 }
@@ -47,5 +54,5 @@ function applyFontEditor(name, fontEditor) {
 createPdfWithFont('sourceFont', sourceFont);
 
 applyFontEditor('fontEditor-current', require('fonteditor-core-current'));
-applyFontEditor('fontEditor-2.1.1', require('fonteditor-core-211'));
+// applyFontEditor('fontEditor-2.1.1', require('fonteditor-core-211'));
 applyFontEditor('fontEditor-2.1.2', require('fonteditor-core-212'));
